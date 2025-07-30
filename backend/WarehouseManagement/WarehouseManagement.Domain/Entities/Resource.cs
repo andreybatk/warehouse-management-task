@@ -15,5 +15,5 @@ public class Resource
     /// <summary>
     /// Состояние ресурса
     /// </summary>
-    public State State { get; set; } = State.Active;
+    public State State { get; set; }
 }

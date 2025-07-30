@@ -19,8 +19,4 @@
     <ProjectReference Include="..\WarehouseManagement.Domain\WarehouseManagement.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

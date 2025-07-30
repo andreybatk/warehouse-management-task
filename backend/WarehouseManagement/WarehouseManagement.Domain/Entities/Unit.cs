@@ -15,5 +15,5 @@ public class Unit
     /// <summary>
     /// Состояние единицы измерения
     /// </summary>
-    public State State { get; set; } = State.Active;
+    public State State { get; set; }
 }

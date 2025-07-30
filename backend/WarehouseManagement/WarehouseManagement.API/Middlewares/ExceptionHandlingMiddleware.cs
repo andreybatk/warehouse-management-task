@@ -47,6 +47,12 @@ public sealed class ExceptionHandlingMiddleware
                 problemDetails.Detail = "One or more validation errors occurred";
                 problemDetails.Extensions["errors"] = validationException.Errors;
                 break;
+
+            case Domain.Exceptions.NotFoundException notFoundException:
+                problemDetails.Status = StatusCodes.Status404NotFound;
+                problemDetails.Title = "Entity not found";
+                problemDetails.Detail = notFoundException.Message;
+                break;
         }
 
         context.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;

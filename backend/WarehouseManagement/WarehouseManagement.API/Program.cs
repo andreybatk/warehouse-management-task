@@ -4,6 +4,7 @@ using WarehouseManagement.API.Helpers;
 using WarehouseManagement.API.Middlewares;
 using WarehouseManagement.BusinessLogic;
 using WarehouseManagement.DataAccess;
+using WarehouseManagement.DataAccess.DiContainer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,8 @@ builder.Services.AddMediatR(config =>
 builder.Services.AddValidatorsFromAssembly(typeof(BusinessLogicAssemblyMarker).Assembly);
 
 builder.Services.AddHealthChecks();
+
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 
