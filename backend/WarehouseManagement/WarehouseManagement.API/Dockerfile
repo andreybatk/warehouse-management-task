@@ -13,6 +13,9 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["WarehouseManagement.API/WarehouseManagement.API.csproj", "WarehouseManagement.API/"]
+COPY ["WarehouseManagement.BusinessLogic/WarehouseManagement.BusinessLogic.csproj", "WarehouseManagement.BusinessLogic/"]
+COPY ["WarehouseManagement.DataAccess/WarehouseManagement.DataAccess.csproj", "WarehouseManagement.DataAccess/"]
+COPY ["WarehouseManagement.Domain/WarehouseManagement.Domain.csproj", "WarehouseManagement.Domain/"]
 RUN dotnet restore "./WarehouseManagement.API/WarehouseManagement.API.csproj"
 COPY . .
 WORKDIR "/src/WarehouseManagement.API"

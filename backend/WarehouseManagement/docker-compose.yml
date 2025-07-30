@@ -1,6 +1,44 @@
+networks:
+  warehousemanagement-network:
+    driver: bridge
+
 services:
+  postgres:
+    container_name: warehousemanagement-postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: warehousemanagement
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - warehousemanagement-postgres-data:/var/lib/postgresql/data
+    networks:
+      - warehousemanagement-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
   warehousemanagement.api:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     image: ${DOCKER_REGISTRY-}warehousemanagementapi
     build:
       context: .
       dockerfile: WarehouseManagement.API/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - warehousemanagement-network
+
+volumes:
+  warehousemanagement-postgres-data:
