@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using WarehouseManagement.API.Helpers;
@@ -5,6 +6,7 @@ using WarehouseManagement.API.Middlewares;
 using WarehouseManagement.BusinessLogic;
 using WarehouseManagement.DataAccess;
 using WarehouseManagement.DataAccess.DiContainer;
+using WarehouseManagement.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,20 @@ builder.Services
 
 builder.Services.AddSwaggerGen(c =>
 {
+    var xmlApi = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+    if (File.Exists(xmlApi))
+        c.IncludeXmlComments(xmlApi, includeControllerXmlComments: true);
+
+    var businessLogicAssembly = typeof(BusinessLogicAssemblyMarker).Assembly;
+    var xmlBusinessLogic = Path.Combine(AppContext.BaseDirectory, $"{businessLogicAssembly.GetName().Name}.xml");
+    if (File.Exists(xmlBusinessLogic))
+        c.IncludeXmlComments(xmlBusinessLogic);
+
+    var domainAssembly = typeof(DomainAssemblyMarker).Assembly;
+    var xmlDomain = Path.Combine(AppContext.BaseDirectory, $"{domainAssembly.GetName().Name}.xml");
+    if (File.Exists(xmlDomain))
+        c.IncludeXmlComments(xmlDomain);
+
     c.SchemaFilter<EnumSchemaFilter>();
 });
 

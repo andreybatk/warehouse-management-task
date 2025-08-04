@@ -8,7 +8,6 @@ public class UpdateResourceCommandValidator : AbstractValidator<UpdateResourceCo
     public UpdateResourceCommandValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Необходимо указать наименование ресурса");
-
+            .NotEmpty().WithMessage("Необходимо указать наименование ресурса.");
     }
 }

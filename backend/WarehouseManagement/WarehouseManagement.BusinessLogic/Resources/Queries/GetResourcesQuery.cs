@@ -4,4 +4,8 @@ using WarehouseManagement.Domain.Enums;
 
 namespace WarehouseManagement.BusinessLogic.Resources.Queries;
 
-public sealed record GetResourcesQuery(State? State) : IQuery<List<ResourceResponse>>;
+/// <summary>
+/// Запрос на получение всех ресурсов
+/// </summary>
+/// <param name="State"></param>
+public sealed record GetResourcesQuery(EState? State) : IQuery<List<ResourceResponse>>;

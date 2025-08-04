@@ -2,26 +2,17 @@
 
 namespace WarehouseManagement.API.Middlewares;
 
-public sealed class ExceptionHandlingMiddleware
+public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
-
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
-
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unhandled exception occurred");
+            logger.LogError(ex, "Unhandled exception occurred");
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -52,6 +43,12 @@ public sealed class ExceptionHandlingMiddleware
                 problemDetails.Status = StatusCodes.Status404NotFound;
                 problemDetails.Title = "Entity not found";
                 problemDetails.Detail = notFoundException.Message;
+                break;
+
+            case Domain.Exceptions.BadRequestException badRequestException:
+                problemDetails.Status = StatusCodes.Status400BadRequest;
+                problemDetails.Title = "Bad request";
+                problemDetails.Detail = badRequestException.Message;
                 break;
         }
 

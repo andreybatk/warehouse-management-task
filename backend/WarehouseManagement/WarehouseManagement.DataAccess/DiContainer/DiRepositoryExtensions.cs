@@ -9,5 +9,6 @@ public static class DiRepositoryExtensions
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IResourceRepository, ResourceRepository>();
+        services.AddScoped<IUnitRepository, UnitRepository>();
     }
 }

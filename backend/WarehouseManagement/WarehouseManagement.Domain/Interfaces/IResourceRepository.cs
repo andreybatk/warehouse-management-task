@@ -10,17 +10,12 @@ public interface IResourceRepository
     /// </summary>
     /// <param name="state">Состояние</param>
     /// <returns></returns>
-    Task<List<Resource>> GetAllAsync(State? state = null);
+    Task<List<Resource>> GetAllAsync(EState? state = null);
 
     /// <summary>
     /// Получить ресурс по идентификатору
     /// </summary>
     Task<Resource?> GetByIdAsync(Guid id);
-
-    /// <summary>
-    /// Получить ресурс по имени
-    /// </summary>
-    Task<Resource?> GetByNameAsync(string name);
 
     /// <summary>
     /// Добавить новый ресурс
@@ -35,10 +30,15 @@ public interface IResourceRepository
     /// <summary>
     /// Удалить ресурс
     /// </summary>
-    Task<bool> DeleteAsync(Guid id);
+    Task<Guid?> DeleteAsync(Guid id);
 
     /// <summary>
     /// Проверить, существует ли ресурс с таким именем.
     /// </summary>
     Task<bool> ExistsByNameAsync(string name);
+
+    /// <summary>
+    /// Получить ресурс по имени
+    /// </summary>
+    Task<Resource?> GetByNameAsync(string name);
 }

@@ -5,18 +5,11 @@ using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.DataAccess.Repositories;
 
-public class ResourceRepository : IResourceRepository
+public class ResourceRepository(ApplicationDbContext context) : IResourceRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    public ResourceRepository(ApplicationDbContext context)
+    public async Task<List<Resource>> GetAllAsync(EState? state = null)
     {
-        _context = context;
-    }
-
-    public async Task<List<Resource>> GetAllAsync(State? state = null)
-    {
-        var query = _context.Resources.AsQueryable();
+        var query = context.Resources.AsQueryable();
 
         if (state is not null)
             query = query.Where(r => r.State == state);
@@ -26,42 +19,42 @@ public class ResourceRepository : IResourceRepository
 
     public async Task<Resource?> GetByIdAsync(Guid id)
     {
-        return await _context.Resources.FirstOrDefaultAsync(r => r.Id == id);
-    }
-
-    public async Task<Resource?> GetByNameAsync(string name)
-    {
-        return await _context.Resources.FirstOrDefaultAsync(r => r.Name == name);
+        return await context.Resources.FirstOrDefaultAsync(r => r.Id == id);
     }
 
     public async Task<Guid> AddAsync(Resource resource)
     {
         resource.Id = Guid.NewGuid();
-        _context.Resources.Add(resource);
-        await _context.SaveChangesAsync();
+        context.Resources.Add(resource);
+        await context.SaveChangesAsync();
         return resource.Id;
     }
 
     public async Task<Guid> UpdateAsync(Resource resource)
     {
-        _context.Resources.Update(resource);
-        await _context.SaveChangesAsync();
+        context.Resources.Update(resource);
+        await context.SaveChangesAsync();
         return resource.Id;
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
+    public async Task<Guid?> DeleteAsync(Guid id)
     {
-        var entity = await _context.Resources.FirstOrDefaultAsync(r => r.Id == id);
+        var entity = await context.Resources.FirstOrDefaultAsync(r => r.Id == id);
         if (entity is null)
-            return false;
+            return null;
 
-        _context.Resources.Remove(entity);
-        await _context.SaveChangesAsync();
-        return true;
+        context.Resources.Remove(entity);
+        await context.SaveChangesAsync();
+        return id;
     }
 
     public async Task<bool> ExistsByNameAsync(string name)
     {
-        return await _context.Resources.AnyAsync(r => r.Name == name);
+        return await context.Resources.AnyAsync(r => r.Name == name);
+    }
+
+    public async Task<Resource?> GetByNameAsync(string name)
+    {
+        return await context.Resources.FirstOrDefaultAsync(r => r.Name == name);
     }
 }

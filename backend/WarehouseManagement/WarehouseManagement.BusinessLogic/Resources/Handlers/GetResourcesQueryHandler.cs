@@ -5,18 +5,13 @@ using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.BusinessLogic.Resources.Handlers;
 
-public class GetResourcesQueryHandler : IQueryHandler<GetResourcesQuery, List<ResourceResponse>>
+public class GetResourcesQueryHandler(IResourceRepository resourceRepository)
+    : IQueryHandler<GetResourcesQuery, List<ResourceResponse>>
 {
-    private readonly IResourceRepository _resourceRepository;
-
-    public GetResourcesQueryHandler(IResourceRepository resourceRepository)
-    {
-        _resourceRepository = resourceRepository;
-    }
-
     public async Task<List<ResourceResponse>> Handle(GetResourcesQuery request, CancellationToken cancellationToken)
     {
-        var resources = await _resourceRepository.GetAllAsync(request.State);
-        return resources.Select(r => new ResourceResponse(r.Id, r.Name, r.State)).ToList();
+        var resources = await resourceRepository.GetAllAsync(request.State);
+
+        return resources.Select(r => new ResourceResponse(r.Id, r.Name, r.State)).ToList(); //TODO: сделать маппер
     }
 }

@@ -2,4 +2,10 @@
 
 namespace WarehouseManagement.BusinessLogic.Resources.DTOs;
 
-public record ResourceResponse(Guid Id, string Name, State State);
+/// <summary>
+/// Ресурс
+/// </summary>
+/// <param name="Id">Идентификатор ресурса</param>
+/// <param name="Name">Наименование</param>
+/// <param name="State">Состояние</param>
+public record ResourceResponse(Guid Id, string Name, EState State);
