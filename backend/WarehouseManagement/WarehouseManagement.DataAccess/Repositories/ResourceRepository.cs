@@ -24,7 +24,6 @@ public class ResourceRepository(ApplicationDbContext context) : IResourceReposit
 
     public async Task<Guid> AddAsync(Resource resource)
     {
-        resource.Id = Guid.NewGuid();
         context.Resources.Add(resource);
         await context.SaveChangesAsync();
         return resource.Id;
@@ -46,6 +45,11 @@ public class ResourceRepository(ApplicationDbContext context) : IResourceReposit
         context.Resources.Remove(entity);
         await context.SaveChangesAsync();
         return id;
+    }
+
+    public async Task<bool> ExistsByIdAsync(Guid id)
+    {
+        return await context.Resources.AnyAsync(r => r.Id == id);
     }
 
     public async Task<bool> ExistsByNameAsync(string name)

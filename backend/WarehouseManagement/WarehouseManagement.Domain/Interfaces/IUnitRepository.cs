@@ -38,6 +38,11 @@ public interface IUnitRepository
     Task<bool> ExistsByNameAsync(string name);
 
     /// <summary>
+    /// Проверить, существует ли единица измерения с таким идентификатором.
+    /// </summary>
+    Task<bool> ExistsByIdAsync(Guid id);
+
+    /// <summary>
     /// Получить единицу измерения по имени
     /// </summary>
     Task<Unit?> GetByNameAsync(string name);

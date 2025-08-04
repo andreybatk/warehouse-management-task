@@ -38,6 +38,11 @@ public interface IResourceRepository
     Task<bool> ExistsByNameAsync(string name);
 
     /// <summary>
+    /// Проверить, существует ли ресурс с таким идентификатором.
+    /// </summary>
+    Task<bool> ExistsByIdAsync(Guid id);
+
+    /// <summary>
     /// Получить ресурс по имени
     /// </summary>
     Task<Resource?> GetByNameAsync(string name);

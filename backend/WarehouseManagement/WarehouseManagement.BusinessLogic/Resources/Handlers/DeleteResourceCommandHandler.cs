@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using WarehouseManagement.BusinessLogic.Abstractions.Messaging;
 using WarehouseManagement.BusinessLogic.Resources.Commands;
-using WarehouseManagement.Domain.Enums;
 using WarehouseManagement.Domain.Exceptions;
 using WarehouseManagement.Domain.Interfaces;
 
@@ -12,9 +11,7 @@ public class DeleteResourceCommandHandler(IResourceRepository resourceRepository
 {
     public async Task<Guid?> Handle(DeleteResourceCommand request, CancellationToken cancellationToken)
     {
-        var resource = await resourceRepository.GetByIdAsync(request.Id);
-
-        if (resource is null)
+        if (await resourceRepository.ExistsByIdAsync(request.Id))
         {
             logger.LogError("Ресурс '{id}' не найден.", request.Id);
             throw new NotFoundException("Ресурс не найден.");
@@ -22,7 +19,7 @@ public class DeleteResourceCommandHandler(IResourceRepository resourceRepository
 
         //TODO: проверка на использовании в документах поступления
 
-        var deletedId = await resourceRepository.DeleteAsync(resource.Id);
+        var deletedId = await resourceRepository.DeleteAsync(request.Id);
 
         return deletedId;
     }

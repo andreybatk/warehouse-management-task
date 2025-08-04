@@ -36,7 +36,7 @@ public class UnitsController(IMediator mediator) : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateUnit([FromBody] CreateUnitCommand command, CancellationToken token)
+    public async Task<IActionResult> Create([FromBody] CreateUnitCommand command, CancellationToken token)
     {
         var unitId = await mediator.Send(command, token);
 
@@ -46,18 +46,18 @@ public class UnitsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Обновить единицу измерения
     /// </summary>
-    /// <param name="unitId">Идентификатор единицы измерения</param>
+    /// <param name="id">Идентификатор единицы измерения</param>
     /// <param name="request">Тело запроса</param>
     /// <param name="token">Cancellation Token</param>
     /// <returns>Идентификатор обновленной единицы измерения</returns>
-    [HttpPut("{unitId:guid}")]
+    [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateUnit(Guid unitId, [FromBody] UpdateUnitRequest request, CancellationToken token)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUnitRequest request, CancellationToken token)
     {
         var command = new UpdateUnitCommand(
-            unitId,
+            id,
             request.Name);
 
         var updatedUnitId = await mediator.Send(command, token);
@@ -68,15 +68,15 @@ public class UnitsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Архивировать единицу измерения
     /// </summary>
-    /// <param name="unitId">Идентификатор единицы измерения</param>
+    /// <param name="id">Идентификатор единицы измерения</param>
     /// <returns>Идентификатор архивированной единицы измерения</returns>
-    [HttpPatch("{unitId:guid}/archive")]
+    [HttpPatch("{id:guid}/archive")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Archive(Guid unitId)
+    public async Task<IActionResult> Archive(Guid id)
     {
-        var archivedId = await mediator.Send(new ChangeUnitStateCommand(unitId, EState.Archived));
+        var archivedId = await mediator.Send(new ChangeUnitStateCommand(id, EState.Archived));
 
         return Ok(archivedId);
     }
@@ -84,15 +84,15 @@ public class UnitsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Активировать единицу измерения
     /// </summary>
-    /// <param name="unitId">Идентификатор единицы измерения</param>
+    /// <param name="id">Идентификатор единицы измерения</param>
     /// <returns>Идентификатор активированной единицы измерения</returns>
-    [HttpPatch("{unitId:guid}/activate")]
+    [HttpPatch("{id:guid}/activate")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Activate(Guid unitId)
+    public async Task<IActionResult> Activate(Guid id)
     {
-        var activatedId = await mediator.Send(new ChangeUnitStateCommand(unitId, EState.Active));
+        var activatedId = await mediator.Send(new ChangeUnitStateCommand(id, EState.Active));
 
         return Ok(activatedId);
     }
@@ -100,15 +100,15 @@ public class UnitsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Удалить единицу измерения
     /// </summary>
-    /// <param name="unitId">Идентификатор единицы измерения</param>
+    /// <param name="id">Идентификатор единицы измерения</param>
     /// <returns>Идентификатор удаленной единицы измерения</returns>
-    [HttpDelete("{unitId:guid}")]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(typeof(Guid?), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid unitId)
+    public async Task<IActionResult> Delete(Guid id)
     {
-        var deletedId = await mediator.Send(new DeleteUnitCommand(unitId));
+        var deletedId = await mediator.Send(new DeleteUnitCommand(id));
 
         return Ok(deletedId);
     }

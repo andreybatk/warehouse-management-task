@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using WarehouseManagement.BusinessLogic.Abstractions.Messaging;
 using WarehouseManagement.BusinessLogic.Resources.Commands;
-using WarehouseManagement.Domain.Entities;
 using WarehouseManagement.Domain.Exceptions;
 using WarehouseManagement.Domain.Interfaces;
 

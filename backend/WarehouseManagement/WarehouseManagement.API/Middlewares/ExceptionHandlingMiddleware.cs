@@ -12,12 +12,11 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Unhandled exception occurred");
-            await HandleExceptionAsync(context, ex);
+            await HandleExceptionAsync(context, ex, logger);
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static async Task HandleExceptionAsync(HttpContext context, Exception exception, ILogger<ExceptionHandlingMiddleware> logger)
     {
         var problemDetails = new ProblemDetails
         {
@@ -53,6 +52,12 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
         }
 
         context.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
+
+        if (problemDetails.Status == StatusCodes.Status500InternalServerError)
+        {
+            logger.LogError(exception, "Unhandled exception occurred");
+        }
+
         await context.Response.WriteAsJsonAsync(problemDetails);
     }
 }

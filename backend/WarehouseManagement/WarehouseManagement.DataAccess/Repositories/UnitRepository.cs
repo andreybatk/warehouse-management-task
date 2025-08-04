@@ -24,7 +24,6 @@ public class UnitRepository (ApplicationDbContext context) : IUnitRepository
 
     public async Task<Guid> AddAsync(Unit unit)
     {
-        unit.Id = Guid.NewGuid();
         context.Units.Add(unit);
         await context.SaveChangesAsync();
         return unit.Id;
@@ -46,6 +45,11 @@ public class UnitRepository (ApplicationDbContext context) : IUnitRepository
         context.Units.Remove(entity);
         await context.SaveChangesAsync();
         return id;
+    }
+
+    public async Task<bool> ExistsByIdAsync(Guid id)
+    {
+        return await context.Units.AnyAsync(u => u.Id == id);
     }
 
     public async Task<bool> ExistsByNameAsync(string name)
