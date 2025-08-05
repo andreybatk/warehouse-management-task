@@ -1,0 +1,22 @@
+<h2 class="h2">Единицы измерения</h2>
+
+<div class="filters">
+  <button (click)="showAll()">Все</button>
+  <button (click)="showActive()">Активные</button>
+  <button (click)="showArchived()">Архивированные</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Наименование</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let u of units">
+      <td>
+        <a [routerLink]="['/units', u.id]">{{ u.name }}</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,22 @@
+<h2 class="h2">Ресурсы</h2>
+
+<div class="filters">
+  <button (click)="showAll()">Все</button>
+  <button (click)="showActive()">Активные</button>
+  <button (click)="showArchived()">Архивированные</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Наименование</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of resources">
+      <td>
+        <a [routerLink]="['/resources', r.id]">{{ r.name }}</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,18 @@
+<h2 class="h2">Редактирование единицы измерения</h2>
+
+<div class="unit-form" *ngIf="unit">
+  <p><b>ID:</b> {{ unit.id }}</p>
+  <p><b>Состояние:</b> {{ unit.state === 'Active' ? 'Активна' : 'Архивирована' }}</p>
+
+  <label class="wm-control-label">Наименование:</label>
+  <input class="wm-input" [(ngModel)]="newName" />
+
+  <button class="btn" (click)="update()">Сохранить</button>
+  <button class="btn btn-warning" *ngIf="unit.state === 'Active'" (click)="archive()">Архивировать</button>
+  <button class="btn" *ngIf="unit.state === 'Archived'" (click)="activate()">Активировать</button>
+  <button class="btn btn-danger" (click)="delete()">Удалить</button>
+</div>
+
+<div *ngIf="!unit">
+  <p>Загрузка...</p>
+</div>
