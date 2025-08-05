@@ -18,13 +18,30 @@ public class ResourcesController(IMediator mediator) : ControllerBase
     /// Получить все ресурсы
     /// </summary>
     /// <param name="state">Состояние</param>
+    /// <param name="token">Cancellation Token</param>
     /// <returns>Коллекция ресурсов</returns>
     [HttpGet]
     [ProducesResponseType(typeof(List<ResourceResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll([FromQuery] EState? state)
+    public async Task<IActionResult> GetAll([FromQuery] EState? state, CancellationToken token)
     {
-        var resources = await mediator.Send(new GetResourcesQuery(state));
+        var resources = await mediator.Send(new GetResourcesQuery(state), token);
+
         return Ok(resources);
+    }
+
+    /// <summary>
+    /// Получить ресурс
+    /// </summary>
+    /// <param name="id">Идентификатор ресурса</param>
+    /// <param name="token">Cancellation Token</param>
+    /// <returns>Коллекция ресурсов</returns>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(ResourceResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get(Guid id, CancellationToken token)
+    {
+        var resource = await mediator.Send(new GetResourceQuery(id), token);
+
+        return Ok(resource);
     }
 
     /// <summary>
@@ -56,9 +73,7 @@ public class ResourcesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateResourceRequest request, CancellationToken token)
     {
-        var command = new UpdateResourceCommand(
-            id,
-            request.Name);
+        var command = new UpdateResourceCommand(id, request.Name);
 
         var updatedResourceId = await mediator.Send(command, token);
 
@@ -69,14 +84,14 @@ public class ResourcesController(IMediator mediator) : ControllerBase
     /// Архивировать ресурс
     /// </summary>
     /// <param name="id">Идентификатор ресурса</param>
-    /// <returns>Идентификатор архивированного ресурса</returns>
+    /// <param name="token">Cancellation Token</param>    /// <returns>Идентификатор архивированного ресурса</returns>
     [HttpPatch("{id:guid}/archive")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Archive(Guid id)
+    public async Task<IActionResult> Archive(Guid id, CancellationToken token)
     {
-        var archivedId = await mediator.Send(new ChangeResourceStateCommand(id, EState.Archived));
+        var archivedId = await mediator.Send(new ChangeResourceStateCommand(id, EState.Archived), token);
 
         return Ok(archivedId);
     }
@@ -85,14 +100,15 @@ public class ResourcesController(IMediator mediator) : ControllerBase
     /// Активировать ресурс
     /// </summary>
     /// <param name="id">Идентификатор ресурса</param>
+    /// <param name="token">Cancellation Token</param>
     /// <returns>Идентификатор активированного ресурса</returns>
     [HttpPatch("{id:guid}/activate")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Activate(Guid id)
+    public async Task<IActionResult> Activate(Guid id, CancellationToken token)
     {
-        var activatedId = await mediator.Send(new ChangeResourceStateCommand(id, EState.Active));
+        var activatedId = await mediator.Send(new ChangeResourceStateCommand(id, EState.Active), token);
 
         return Ok(activatedId);
     }
@@ -101,14 +117,15 @@ public class ResourcesController(IMediator mediator) : ControllerBase
     /// Удалить ресурс
     /// </summary>
     /// <param name="id">Идентификатор ресурса</param>
+    /// <param name="token">Cancellation Token</param>
     /// <returns>Идентификатор удаленного ресурса</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(typeof(Guid?), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken token)
     {
-        var deletedId = await mediator.Send(new DeleteResourceCommand(id));
+        var deletedId = await mediator.Send(new DeleteResourceCommand(id), token);
 
         return Ok(deletedId);
     }

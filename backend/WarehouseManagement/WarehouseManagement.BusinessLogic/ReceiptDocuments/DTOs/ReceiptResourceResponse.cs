@@ -10,17 +10,9 @@ public class ReceiptResourceResponse
     /// </summary>
     public Guid Id { get; set; }
     /// <summary>
-    /// Идентификатор ресурса
-    /// </summary>
-    public Guid ResourceId { get; set; }
-    /// <summary>
     /// Наименование ресурса
     /// </summary>
     public string ResourceName { get; set; } = string.Empty;
-    /// <summary>
-    /// Идентификатор единицы измерения
-    /// </summary>
-    public Guid UnitId { get; set; }
     /// <summary>
     /// Наименование единицы измерения
     /// </summary>

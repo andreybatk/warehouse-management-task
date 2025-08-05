@@ -14,16 +14,18 @@ namespace WarehouseManagement.API.Controllers;
 public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
 {
     /// <summary>
-    /// Создание документа поступления
+    /// Создать документ поступления
     /// </summary>
     /// <param name="command">Тело запроса</param>
-    /// <returns></returns>
+    /// <param name="token">Cancellation Token</param>
+    /// <returns>Идентификатор созданного документа поступления</returns>
     [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateReceiptDocument([FromBody] CreateReceiptDocumentCommand command)
+    public async Task<IActionResult> CreateReceiptDocument([FromBody] CreateReceiptDocumentCommand command, CancellationToken token)
     {
-        var id = await mediator.Send(command);
+        var id = await mediator.Send(command, token);
+
         return Ok(id);
     }
 
@@ -31,14 +33,15 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
     /// Получить документ поступления
     /// </summary>
     /// <param name="id">Идентификатор документа поступления</param>
+    /// <param name="token">Cancellation Token</param>
     /// <returns>Идентификатор обновленного документа поступления</returns>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ReceiptDocumentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get(Guid id, CancellationToken token)
     {
-        var document = await mediator.Send(new GetDocumentQuery(id));
+        var document = await mediator.Send(new GetDocumentQuery(id), token);
 
         return Ok(document);
     }
@@ -47,12 +50,13 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
     /// Получить документы поступления с ресурсами и фильтрацией
     /// </summary>
     /// <param name="command">Тело запроса</param>
-    /// <returns></returns>
+    /// <param name="token">Cancellation Token</param>
+    /// <returns>Коллекция документов поступления</returns>
     [HttpPost("search")]
     [ProducesResponseType(typeof(List<ReceiptDocumentResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll([FromBody] GetDocumentsQuery command)
+    public async Task<IActionResult> GetAll([FromBody] GetDocumentsQuery command, CancellationToken token)
     {
-        var documents = await mediator.Send(command);
+        var documents = await mediator.Send(command, token);
 
         return Ok(documents);
     }
@@ -61,14 +65,15 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
     /// Удалить документ поступления
     /// </summary>
     /// <param name="id">Идентификатор документа поступления</param>
+    /// <param name="token">Cancellation Token</param>
     /// <returns>Идентификатор удаленного документа поступления</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(typeof(Guid?), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken token)
     {
-        var deletedId = await mediator.Send(new DeleteReceiptDocumentCommand(id));
+        var deletedId = await mediator.Send(new DeleteReceiptDocumentCommand(id), token);
 
         return Ok(deletedId);
     }
@@ -78,14 +83,15 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="id">Идентификатор документа поступления</param>
     /// <param name="request">Тело запроса</param>
+    /// <param name="token">Cancellation Token</param>
     /// <returns>Идентификатор обновленного документа поступления</returns>
     [HttpPatch("{id:guid}")]
     [ProducesResponseType(typeof(Guid?), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateReceiptDocumentRequest request)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateReceiptDocumentRequest request, CancellationToken token)
     {
-        var updatedId = await mediator.Send(new UpdateReceiptDocumentCommand(id, request.Number, request.CreatedAt));
+        var updatedId = await mediator.Send(new UpdateReceiptDocumentCommand(id, request.Number, request.CreatedAt), token);
 
         return Ok(updatedId);
     }

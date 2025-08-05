@@ -28,9 +28,7 @@ public class GetDocumentQueryHandler(IReceiptDocumentRepository repository, ILog
                 .Select(r => new ReceiptResourceResponse
                 {
                     Id = r.Id,
-                    ResourceId = r.ResourceId,
                     ResourceName = r.Resource.Name,
-                    UnitId = r.UnitId,
                     UnitName = r.Unit.Name,
                     Quantity = r.Quantity
                 })]

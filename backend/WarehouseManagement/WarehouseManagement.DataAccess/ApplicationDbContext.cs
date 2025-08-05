@@ -10,7 +10,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Resource> Resources { get; set; }
     public DbSet<Unit> Units { get; set; }
     public DbSet<ReceiptDocument> ReceiptDocuments { get; set; }
-    public DbSet<ReceiptResource> ReceiptResource { get; set; }
+    public DbSet<ReceiptResource> ReceiptResources { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -18,13 +18,30 @@ public class UnitsController(IMediator mediator) : ControllerBase
     /// Получить все единицы измерения
     /// </summary>
     /// <param name="state">Состояние</param>
+    /// <param name="token">Cancellation Token</param>
     /// <returns>Коллекция единиц измерения</returns>
     [HttpGet]
     [ProducesResponseType(typeof(List<UnitResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll([FromQuery] EState? state)
+    public async Task<IActionResult> GetAll([FromQuery] EState? state, CancellationToken token)
     {
-        var units = await mediator.Send(new GetUnitsQuery(state));
+        var units = await mediator.Send(new GetUnitsQuery(state), token);
+
         return Ok(units);
+    }
+
+    /// <summary>
+    /// Получить единицу измерения
+    /// </summary>
+    /// <param name="id">Идентификатор единицы измерения</param>
+    /// <param name="token">Cancellation Token</param>
+    /// <returns>Коллекция единиц измерения</returns>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(UnitResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get(Guid id, CancellationToken token)
+    {
+        var unit = await mediator.Send(new GetUnitQuery(id), token);
+
+        return Ok(unit);
     }
 
     /// <summary>
@@ -56,9 +73,7 @@ public class UnitsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUnitRequest request, CancellationToken token)
     {
-        var command = new UpdateUnitCommand(
-            id,
-            request.Name);
+        var command = new UpdateUnitCommand(id,  request.Name);
 
         var updatedUnitId = await mediator.Send(command, token);
 
@@ -69,14 +84,15 @@ public class UnitsController(IMediator mediator) : ControllerBase
     /// Архивировать единицу измерения
     /// </summary>
     /// <param name="id">Идентификатор единицы измерения</param>
+    /// <param name="token">Cancellation Token</param> 
     /// <returns>Идентификатор архивированной единицы измерения</returns>
     [HttpPatch("{id:guid}/archive")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Archive(Guid id)
+    public async Task<IActionResult> Archive(Guid id, CancellationToken token)
     {
-        var archivedId = await mediator.Send(new ChangeUnitStateCommand(id, EState.Archived));
+        var archivedId = await mediator.Send(new ChangeUnitStateCommand(id, EState.Archived), token);
 
         return Ok(archivedId);
     }
@@ -85,14 +101,15 @@ public class UnitsController(IMediator mediator) : ControllerBase
     /// Активировать единицу измерения
     /// </summary>
     /// <param name="id">Идентификатор единицы измерения</param>
+    /// <param name="token">Cancellation Token</param> 
     /// <returns>Идентификатор активированной единицы измерения</returns>
     [HttpPatch("{id:guid}/activate")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Activate(Guid id)
+    public async Task<IActionResult> Activate(Guid id, CancellationToken token)
     {
-        var activatedId = await mediator.Send(new ChangeUnitStateCommand(id, EState.Active));
+        var activatedId = await mediator.Send(new ChangeUnitStateCommand(id, EState.Active), token);
 
         return Ok(activatedId);
     }
@@ -101,14 +118,15 @@ public class UnitsController(IMediator mediator) : ControllerBase
     /// Удалить единицу измерения
     /// </summary>
     /// <param name="id">Идентификатор единицы измерения</param>
+    /// <param name="token">Cancellation Token</param> 
     /// <returns>Идентификатор удаленной единицы измерения</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(typeof(Guid?), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken token)
     {
-        var deletedId = await mediator.Send(new DeleteUnitCommand(id));
+        var deletedId = await mediator.Send(new DeleteUnitCommand(id), token);
 
         return Ok(deletedId);
     }
