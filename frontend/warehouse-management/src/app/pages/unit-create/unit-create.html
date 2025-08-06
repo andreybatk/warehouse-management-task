@@ -1,0 +1,23 @@
+<form
+  class="create-form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <h3 class="h3">Единица измерения</h3>
+    <div *ngIf="errorMessage" class="error-box">
+        {{ errorMessage }}
+    </div>
+    
+    <label class="wm-control-label mb16">
+    Наименование
+    <input formControlName="name" class="wm-input" type="text" placeholder="Введите наименование" />
+    </label>
+
+    <label class="wm-control-label mb16">Состояние
+        <select formControlName="state" class="wm-select">
+            <option value="Active">Активный</option>
+            <option value="Archived">Архивированный</option>
+        </select>
+    </label>
+    <button class="btn" type="submit" [disabled]="form.invalid">Добавить</button>
+</form>

@@ -1,13 +1,23 @@
 :host {
   display:block;
   background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--light-color);
-  margin-block-start: 1em;
-  margin-block-end: 1em;
   min-height: 100vh;
 
   @media (max-width: 768px) {
     min-height: 100%;
     grid-template-columns: 1fr;
   }
+}
+
+.page-title {
+  padding-left: 5%;
+}
+
+.page-header-title {
+  display: block;
+  width: 100%;
+  background: var(--gray-color-a);
+  padding: 5%;
+  margin: 0 0 15px 0;
+  box-sizing: border-box;  
 }
