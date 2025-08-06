@@ -17,6 +17,8 @@ export class UnitDetails implements OnInit {
   unit?: Unit;
   newName: string = '';
 
+  errorMessage: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -63,8 +65,14 @@ export class UnitDetails implements OnInit {
   delete(): void {
     if (confirm('Удалить эту единицу?')) {
       this.unitService.delete(this.unitId).subscribe({
-        next: () => this.router.navigate(['/units']),
-        error: (err) => console.error('Ошибка удаления', err)
+        next: () =>  {
+          this.router.navigate(['/units']);
+          this.errorMessage = null;
+        },
+        error: (err) => {
+          console.error('Ошибка удаления', err);
+          this.errorMessage = err.error?.detail || 'Произошла ошибка';
+        }
       });
     }
   }

@@ -4,3 +4,30 @@
   align-items: center;
   margin: 0 5%;
 }
+
+.filters-form * { 
+  box-sizing: border-box;
+}
+
+.filters-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end; 
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.filters-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--light-color);
+  min-width: 180px;
+}
+
+.filters-form .actions {
+  display: flex;
+  gap: 10px;
+}
+

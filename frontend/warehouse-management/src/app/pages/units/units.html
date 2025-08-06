@@ -1,12 +1,13 @@
 <h2 class="h2">Единицы измерения</h2>
 
 <div class="filters">
-  <button (click)="showAll()">Все</button>
-  <button (click)="showActive()">Активные</button>
-  <button (click)="showArchived()">Архивированные</button>
+  <button class="btn" (click)="showAll()">Все</button>
+  <button class="btn"(click)="showActive()">Активные</button>
+  <button class="btn" (click)="showArchived()">Архивированные</button>
+  <button class="btn btn-shadow" [routerLink]="['/units/create']">Добавить</button>
 </div>
 
-<table>
+<table class="mt32">
   <thead>
     <tr>
       <th>Наименование</th>

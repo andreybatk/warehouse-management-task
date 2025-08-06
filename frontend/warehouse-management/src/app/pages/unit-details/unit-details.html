@@ -1,16 +1,26 @@
-<h2 class="h2">Редактирование единицы измерения</h2>
+<div class="unit-header">
+  <h3 class="h3">Редактирование единицы измерения</h3>
+  <div class="actions">
+    <button class="btn btn-warning" *ngIf="unit?.state === 'Active'" (click)="archive()">Архивировать</button>
+    <button class="btn" *ngIf="unit?.state === 'Archived'" (click)="activate()">Активировать</button>
+    <button class="btn btn-danger" (click)="delete()">Удалить</button>
+  </div>
+</div>
+
+<div *ngIf="errorMessage" class="error-box">
+    {{ errorMessage }}
+</div>
 
 <div class="unit-form" *ngIf="unit">
   <p><b>ID:</b> {{ unit.id }}</p>
   <p><b>Состояние:</b> {{ unit.state === 'Active' ? 'Активна' : 'Архивирована' }}</p>
 
-  <label class="wm-control-label">Наименование:</label>
-  <input class="wm-input" [(ngModel)]="newName" />
+  <label class="wm-control-label mb16">
+    Наименование
+    <input class="wm-input" [(ngModel)]="newName" />
+  </label>
 
   <button class="btn" (click)="update()">Сохранить</button>
-  <button class="btn btn-warning" *ngIf="unit.state === 'Active'" (click)="archive()">Архивировать</button>
-  <button class="btn" *ngIf="unit.state === 'Archived'" (click)="activate()">Активировать</button>
-  <button class="btn btn-danger" (click)="delete()">Удалить</button>
 </div>
 
 <div *ngIf="!unit">

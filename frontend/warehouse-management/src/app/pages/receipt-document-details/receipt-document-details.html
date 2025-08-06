@@ -1,0 +1,56 @@
+<h3 class="h3">Поступление</h3>
+
+<form class="edit-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label class="wm-control-label mb16">
+    Номер документа
+    <input type="number" class="wm-input mb16" formControlName="number" />
+  </label>
+
+  <label class="wm-control-label mb16">
+    Дата создания
+    <input type="date" class="wm-input mb16" formControlName="createdAt" />
+  </label>
+
+  <h3>Ресурсы поступления</h3>
+
+  <table class="resources-table" formArrayName="receiptResources">
+    <thead>
+      <tr>
+        <th>Ресурс</th>
+        <th>Единица</th>
+        <th>Количество</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of resources.controls; let i = index" [formGroupName]="i">
+        <td>
+          <select formControlName="resourceId" class="wm-select">
+            <option value="">Выберите ресурс</option>
+            <option *ngFor="let res of availableResources" [value]="res.id">{{ res.name }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="unitId" class="wm-select">
+            <option value="">Выберите единицу</option>
+            <option *ngFor="let u of availableUnits" [value]="u.id">{{ u.name }}</option>
+          </select>
+        </td>
+        <td>
+          <input type="number" formControlName="quantity" class="wm-input" />
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" (click)="removeResource(i)">Удалить</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button type="button" class="btn" (click)="addResource()">+ Добавить ресурс</button>
+
+  <div class="mt16">
+    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Сохранить изменения</button>
+  </div>
+</form>
+
+<div *ngIf="errorMessage" class="error-box">{{ errorMessage }}</div>

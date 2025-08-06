@@ -1,0 +1,17 @@
+:host {
+  display:grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  margin: 0 5%;
+}
+
+.edit-form * { 
+  box-sizing: border-box;
+}
+
+.resources-table select,
+.resources-table input {
+  color: var(--dark-color);
+  background-color: var(--primary-light-color-a);
+  width: 100%;
+}

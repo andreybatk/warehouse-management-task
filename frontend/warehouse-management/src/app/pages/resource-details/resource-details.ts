@@ -16,6 +16,8 @@ export class ResourceDetails implements OnInit {
   resource?: Resource;
   newName: string = '';
 
+  errorMessage: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -62,8 +64,13 @@ export class ResourceDetails implements OnInit {
   delete(): void {
     if (confirm('Удалить этот ресурс?')) {
       this.resourceService.delete(this.resourceId).subscribe({
-        next: () => this.router.navigate(['/resources']),
-        error: (err) => console.error('Ошибка удаления', err)
+        next: () => {
+          this.router.navigate(['/resources']);
+          this.errorMessage = null;
+         },
+        error: (err) => {
+          this.errorMessage = err.error?.detail || 'Произошла ошибка';
+        }
       });
     }
   }

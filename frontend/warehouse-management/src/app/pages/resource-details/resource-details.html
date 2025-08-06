@@ -1,16 +1,28 @@
-<h2 class="h2">Редактирование ресурса</h2>
+<div class="resource-header">
+  <h3 class="h3">Редактирование ресурса</h3>
+    
+  <div class="actions">
+    <button class="btn btn-warning" *ngIf="resource?.state === 'Active'" (click)="archive()">Архивировать</button>
+    <button class="btn" *ngIf="resource?.state === 'Archived'" (click)="activate()">Активировать</button>
+    <button class="btn btn-danger" (click)="delete()">Удалить</button>
+  </div>
+</div>
+
+<div *ngIf="errorMessage" class="error-box">
+    {{ errorMessage }}
+</div>
 
 <div class="resource-form" *ngIf="resource">
   <p><b>ID:</b> {{ resource.id }}</p>
   <p><b>Состояние:</b> {{ resource.state === 'Active' ? 'Активен' : 'Архивирован' }}</p>
 
-  <label class="wm-control-label">Наименование</label>
-  <input class="wm-input" [(ngModel)]="newName" />
+  <label class="wm-control-label mb16">
+    Наименование
+    <input class="wm-input" [(ngModel)]="newName" />
+  </label>
 
   <button class="btn" (click)="update()">Сохранить</button>
-  <button class="btn btn-warning" *ngIf="resource.state === 'Active'" (click)="archive()">Архивировать</button>
-  <button class="btn" *ngIf="resource.state === 'Archived'" (click)="activate()">Активировать</button>
-  <button class="btn btn-danger" (click)="delete()">Удалить</button>
+  
 </div>
 
 <div *ngIf="!resource">
