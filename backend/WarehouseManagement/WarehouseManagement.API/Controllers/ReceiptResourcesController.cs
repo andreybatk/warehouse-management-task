@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using WarehouseManagement.BusinessLogic.ReceiptResources.Commands;
 using WarehouseManagement.BusinessLogic.ReceiptResources.DTOs;
 
+namespace WarehouseManagement.API.Controllers;
+
 /// <summary>
 /// Ресурсы поступления
 /// </summary>
@@ -18,7 +20,7 @@ public class ReceiptResourcesController(IMediator mediator) : ControllerBase
     /// <returns>Идентификатор созданного ресурса поступления</returns>
     [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
-    public async Task<IActionResult> Add([FromBody] AddReceiptResourceCommand command, CancellationToken token)
+    public async Task<IActionResult> Create([FromBody] AddReceiptResourceCommand command, CancellationToken token)
     {
         var id = await mediator.Send(command, token);
 

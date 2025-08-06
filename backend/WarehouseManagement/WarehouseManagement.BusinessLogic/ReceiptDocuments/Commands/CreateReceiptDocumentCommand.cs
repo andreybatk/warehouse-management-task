@@ -12,5 +12,5 @@ namespace WarehouseManagement.BusinessLogic.ReceiptDocuments.Commands;
 public sealed record CreateReceiptDocumentCommand(
     long Number,
     DateTime CreatedAt,
-    List<CreateReceiptRequest> ReceiptResources
+    List<CreateReceiptRequest>? ReceiptResources
 ) : ICommand<Guid>;

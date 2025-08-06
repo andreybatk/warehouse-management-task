@@ -16,7 +16,7 @@ public class AddReceiptResourceHandler(
     public async Task<Guid> Handle(AddReceiptResourceCommand request, CancellationToken cancellationToken)
     {
         if (!await documentRepository.ExistsByIdAsync(request.ReceiptDocumentId))
-            throw new NotFoundException($"Документ поступления не найден.");
+            throw new NotFoundException("Документ поступления не найден.");
 
         if (!await resourceRepository.ExistsByIdAsync(request.ResourceId))
             throw new NotFoundException("Ресурс не найден.");

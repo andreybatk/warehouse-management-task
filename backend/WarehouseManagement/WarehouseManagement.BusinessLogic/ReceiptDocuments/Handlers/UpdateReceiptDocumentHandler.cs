@@ -6,12 +6,12 @@ using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.BusinessLogic.ReceiptDocuments.Handlers;
 
-public class UpdateReceiptDocumentHandler(IReceiptDocumentRepository repository, ILogger<UpdateReceiptDocumentHandler> logger)
+public class UpdateReceiptDocumentHandler(IReceiptDocumentRepository receiptDocumentRepository, ILogger<UpdateReceiptDocumentHandler> logger)
     : ICommandHandler<UpdateReceiptDocumentCommand, Guid>
 {
     public async Task<Guid> Handle(UpdateReceiptDocumentCommand request, CancellationToken cancellationToken)
     {
-        var document = await repository.GetByIdAsync(request.Id);
+        var document = await receiptDocumentRepository.GetByIdAsync(request.Id);
 
         if (document is null)
         {
@@ -22,7 +22,7 @@ public class UpdateReceiptDocumentHandler(IReceiptDocumentRepository repository,
         document.Number = request.Number;
         document.CreatedAt = request.CreatedAt;
 
-        var updatedId = await repository.UpdateAsync(document);
+        var updatedId = await receiptDocumentRepository.UpdateAsync(document);
 
         return updatedId;
     }

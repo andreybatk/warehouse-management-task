@@ -22,6 +22,11 @@ public interface IReceiptDocumentRepository
     Task<ReceiptDocument?> GetByIdAsync(Guid id, bool include = false);
 
     /// <summary>
+    /// Получить номера документов поступления
+    /// </summary>
+    Task<List<long>> GetNumbersAsync();
+
+    /// <summary>
     /// Удалить документ поступления
     /// </summary>
     Task<Guid?> DeleteAsync(Guid id);

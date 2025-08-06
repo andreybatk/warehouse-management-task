@@ -19,7 +19,7 @@ public class UpdateReceiptResourceHandler(
             throw new NotFoundException("Ресурс поступления не найден.");
 
         if (!await documentRepository.ExistsByIdAsync(request.ReceiptDocumentId))
-            throw new NotFoundException($"Документ поступления не найден.");
+            throw new NotFoundException("Документ поступления не найден.");
 
         if (!await resourceRepository.ExistsByIdAsync(request.ResourceId))
             throw new NotFoundException("Ресурс не найден.");

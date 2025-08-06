@@ -6,12 +6,12 @@ using WarehouseManagement.Domain.Exceptions;
 using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.BusinessLogic.ReceiptDocuments.Handlers;
-public class GetDocumentQueryHandler(IReceiptDocumentRepository repository, ILogger<GetDocumentQueryHandler> logger)
+public class GetDocumentQueryHandler(IReceiptDocumentRepository receiptDocumentRepository, ILogger<GetDocumentQueryHandler> logger)
     : IQueryHandler<GetDocumentQuery, ReceiptDocumentResponse>
 {
     public async Task<ReceiptDocumentResponse> Handle(GetDocumentQuery request, CancellationToken cancellationToken)
     {
-        var document = await repository.GetByIdAsync(request.Id, true);
+        var document = await receiptDocumentRepository.GetByIdAsync(request.Id, true);
 
         if (document is null)
         {
@@ -28,7 +28,9 @@ public class GetDocumentQueryHandler(IReceiptDocumentRepository repository, ILog
                 .Select(r => new ReceiptResourceResponse
                 {
                     Id = r.Id,
+                    ResourceId = r.ResourceId,
                     ResourceName = r.Resource.Name,
+                    UnitId = r.UnitId,
                     UnitName = r.Unit.Name,
                     Quantity = r.Quantity
                 })]

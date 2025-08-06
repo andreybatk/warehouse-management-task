@@ -31,4 +31,14 @@ public class ReceiptResourceRepository(ApplicationDbContext context) : IReceiptR
         await context.SaveChangesAsync();
         return resource.Id;
     }
+
+    public async Task<bool> IsUnitUsedAsync(Guid unitId)
+    {
+        return await context.ReceiptResources.AnyAsync(r => r.UnitId == unitId);
+    }
+
+    public async Task<bool> IsResourceUsedAsync(Guid resourceId)
+    {
+        return await context.ReceiptResources.AnyAsync(r => r.ResourceId == resourceId);
+    }
 }

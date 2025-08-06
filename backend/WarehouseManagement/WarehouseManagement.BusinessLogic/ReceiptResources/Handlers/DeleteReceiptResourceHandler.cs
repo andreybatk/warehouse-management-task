@@ -5,15 +5,15 @@ using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.BusinessLogic.ReceiptResources.Handlers;
 
-public class DeleteReceiptResourceHandler(IReceiptResourceRepository resourceRepository)
+public class DeleteReceiptResourceHandler(IReceiptResourceRepository receiptResourceRepository)
     : ICommandHandler<DeleteReceiptResourceCommand, Guid>
 {
     public async Task<Guid> Handle(DeleteReceiptResourceCommand request, CancellationToken cancellationToken)
     {
-        var entity = await resourceRepository.GetByIdAsync(request.Id);
+        var entity = await receiptResourceRepository.GetByIdAsync(request.Id);
         if (entity is null)
             throw new NotFoundException("Ресурс поступления не найден.");
 
-        return await resourceRepository.DeleteAsync(entity);
+        return await receiptResourceRepository.DeleteAsync(entity);
     }
 }

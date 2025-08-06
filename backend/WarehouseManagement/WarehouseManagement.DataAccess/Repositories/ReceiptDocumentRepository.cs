@@ -28,6 +28,10 @@ public class ReceiptDocumentRepository(ApplicationDbContext context) : IReceiptD
         return await query.FirstOrDefaultAsync(d => d.Id == id);
     }
 
+    public async Task<List<long>> GetNumbersAsync()
+    {
+        return await context.ReceiptDocuments.Select(d => d.Number).ToListAsync();
+    }
 
     public async Task<Guid> UpdateAsync(ReceiptDocument unit)
     {
@@ -70,19 +74,20 @@ public class ReceiptDocumentRepository(ApplicationDbContext context) : IReceiptD
             query = query.Where(d => d.CreatedAt >= dateFrom.Value);
         if (dateTo.HasValue)
             query = query.Where(d => d.CreatedAt <= dateTo.Value);
-        if (documentNumbers is { Count: > 0 })
+        if (documentNumbers is not null)
             query = query.Where(d => documentNumbers.Contains(d.Number));
 
+        if ((resourceIds?.Count > 0) || (unitIds?.Count > 0))
+        {
+            query = query.Where(d => d.ReceiptResources.Any(r =>
+                (resourceIds == null || resourceIds.Count == 0 || resourceIds.Contains(r.ResourceId)) &&
+                (unitIds == null || unitIds.Count == 0 || unitIds.Contains(r.UnitId))));
+        }
+
         query = query
-            .Include(d => d.ReceiptResources
-                .Where(r =>
-                    (resourceIds == null || resourceIds.Count == 0 || resourceIds.Contains(r.ResourceId)) &&
-                    (unitIds == null || unitIds.Count == 0 || unitIds.Contains(r.UnitId))))
+            .Include(d => d.ReceiptResources)
             .ThenInclude(r => r.Resource)
-            .Include(d => d.ReceiptResources
-                .Where(r =>
-                    (resourceIds == null || resourceIds.Count == 0 || resourceIds.Contains(r.ResourceId)) &&
-                    (unitIds == null || unitIds.Count == 0 || unitIds.Contains(r.UnitId))))
+            .Include(d => d.ReceiptResources)
             .ThenInclude(r => r.Unit);
 
         return await query

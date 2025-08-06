@@ -22,7 +22,7 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateReceiptDocument([FromBody] CreateReceiptDocumentCommand command, CancellationToken token)
+    public async Task<IActionResult> Create([FromBody] CreateReceiptDocumentCommand command, CancellationToken token)
     {
         var id = await mediator.Send(command, token);
 
@@ -44,6 +44,20 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
         var document = await mediator.Send(new GetDocumentQuery(id), token);
 
         return Ok(document);
+    }
+
+    /// <summary>
+    /// Получить все номера документов поступления
+    /// </summary>
+    /// <param name="token">Cancellation Token</param>
+    /// <returns>Коллекцию номеров документов поступления</returns>
+    [HttpGet("numbers")]
+    [ProducesResponseType(typeof(ReceiptDocumentResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetNumbers(CancellationToken token)
+    {
+        var numbers = await mediator.Send(new GetNumbersDocumentsQuery(), token);
+
+        return Ok(numbers);
     }
 
     /// <summary>
@@ -78,6 +92,7 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
         return Ok(deletedId);
     }
 
+    //TODO: Сделать обновление всего документа и ресурсов одним запросом
     /// <summary>
     /// Обновить документ поступления
     /// </summary>
@@ -85,7 +100,7 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
     /// <param name="request">Тело запроса</param>
     /// <param name="token">Cancellation Token</param>
     /// <returns>Идентификатор обновленного документа поступления</returns>
-    [HttpPatch("{id:guid}")]
+    [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(Guid?), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

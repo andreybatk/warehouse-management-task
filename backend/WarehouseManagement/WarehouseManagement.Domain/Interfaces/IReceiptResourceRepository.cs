@@ -8,4 +8,6 @@ public interface IReceiptResourceRepository
     Task<Guid> AddAsync(ReceiptResource resource);
     Task<Guid> UpdateAsync(ReceiptResource resource);
     Task<Guid> DeleteAsync(ReceiptResource resource);
+    Task<bool> IsUnitUsedAsync(Guid unitId);
+    Task<bool> IsResourceUsedAsync(Guid resourceId);
 }
