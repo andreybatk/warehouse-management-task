@@ -15,3 +15,16 @@
   background-color: var(--primary-light-color-a);
   width: 100%;
 }
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.receipt-documents-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+

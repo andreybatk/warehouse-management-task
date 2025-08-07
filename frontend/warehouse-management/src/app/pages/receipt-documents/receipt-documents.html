@@ -1,47 +1,50 @@
-<h2 class="h2">Поступления</h2>
-
-<form class="filters-form" [formGroup]="filterForm" (ngSubmit)="applyFilters()">
-  <label class="wm-control-label mb16">
-    Дата с
-    <input class="wm-input" type="date" formControlName="dateFrom" />
-  </label>
-  <label class="wm-control-label mb16">
-    Дата по
-    <input class="wm-input" type="date" formControlName="dateTo" />
-  </label>
-
-  <label class="wm-control-label mb16">
-    Номер поступления
-    <select multiple class="wm-select" formControlName="documentNumbers">
-      <option value="">Все</option>
-      <option *ngFor="let n of numbers" [value]="n">{{n}}</option>
-    </select>
-  </label>
-
-  <label class="wm-control-label mb16">
-    Ресурс
-    <select multiple class="wm-select" formControlName="resourceIds">
-      <option value="">Все</option>
-      <option *ngFor="let r of resources" [value]="r.id">{{ r.name }}</option>
-    </select>
-  </label>
-
-  <label class="wm-control-label mb16">
-    Единица измерения
-    <select multiple class="wm-select" formControlName="unitIds">
-      <option value="">Все</option>
-      <option *ngFor="let u of units" [value]="u.id">{{ u.name }}</option>
-    </select>
-  </label>
-
-  <div class="actions mt16">
-    <button class="btn" type="submit">Применить</button>
+<div class="receipt-documents-header">
+  <h2 class="h2">Поступления</h2>
+  <div class="actions">
     <button class="btn btn-shadow" [routerLink]="['/receipt-documents/create']">Добавить</button>
   </div>
+</div>
+
+<form  [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+  <div class="filters-form">
+    <label class="wm-control-label mb16">
+      Дата с
+      <input class="wm-input" type="date" formControlName="dateFrom" />
+    </label>
+    <label class="wm-control-label mb16">
+      Дата по
+      <input class="wm-input" type="date" formControlName="dateTo" />
+    </label>
+
+    <label class="wm-control-label mb16">
+      Номер поступления
+      <select multiple class="wm-select" formControlName="documentNumbers">
+        <option value="">Все</option>
+        <option *ngFor="let n of numbers" [value]="n">{{n}}</option>
+      </select>
+    </label>
+
+    <label class="wm-control-label mb16">
+      Ресурс
+      <select multiple class="wm-select" formControlName="resourceIds">
+        <option value="">Все</option>
+        <option *ngFor="let r of resources" [value]="r.id">{{ r.name }}</option>
+      </select>
+    </label>
+
+    <label class="wm-control-label mb16">
+      Единица измерения
+      <select multiple class="wm-select" formControlName="unitIds">
+        <option value="">Все</option>
+        <option *ngFor="let u of units" [value]="u.id">{{ u.name }}</option>
+      </select>
+    </label>
+  </div>
+  <button class="btn btn-small" type="submit">Применить</button>
 </form>
 
-<div *ngIf="errorMessage" class="error-box">{{ errorMessage }}</div>
-<div *ngIf="loading">Загрузка...</div>
+<div *ngIf="errorMessage" class="error-box mt16">{{ errorMessage }}</div>
+<div *ngIf="loading" class="mt16">Загрузка...</div>
 
 <table class="mt32" *ngIf="!loading && documents.length > 0">
   <thead>

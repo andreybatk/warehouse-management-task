@@ -14,20 +14,18 @@
   flex-wrap: wrap;
   gap: 16px;
   align-items: flex-end; 
-  padding: 10px;
   border-radius: 6px;
 }
 
-.filters-form label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--light-color);
-  min-width: 180px;
-}
-
-.filters-form .actions {
+.actions {
   display: flex;
   gap: 10px;
+}
+
+.receipt-documents-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 

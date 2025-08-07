@@ -34,8 +34,14 @@ export interface CreateReceiptResourceRequest {
   quantity: number;
 }
 
-//TODO: Нужно переделать под обновление всего документа и ресурсов одним запросом
 export interface UpdateReceiptDocumentRequest {
   number: number;
   createdAt: Date;
+  receiptResources: {
+    id?: string;
+    resourceId: string;
+    unitId: string;
+    quantity: number;
+  }[];
 }
+

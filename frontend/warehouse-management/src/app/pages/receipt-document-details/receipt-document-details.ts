@@ -20,7 +20,7 @@ export class ReceiptDocumentDetails implements OnInit {
   form: FormGroup;
   availableResources: Resource[] = [];
   availableUnits: Unit[] = [];
-  errorMessage = '';
+  errorMessage: string | null = null;
   private documentId = '';
 
   constructor(
@@ -57,6 +57,7 @@ export class ReceiptDocumentDetails implements OnInit {
   addResource(data?: any) {
     this.resources.push(
       this.fb.group({
+        id: [data?.id || null],
         resourceId: [data?.resourceId || null, Validators.required],
         unitId: [data?.unitId || null, Validators.required],
         quantity: [data?.quantity || null, [Validators.required, Validators.min(1)]]
@@ -76,6 +77,26 @@ export class ReceiptDocumentDetails implements OnInit {
 
     this.resources.clear();
     doc.receiptResources.forEach(r => this.addResource(r));
+
+    for (const res of doc.receiptResources) {
+      const alreadyHasResource = this.availableResources.some(r => r.id === res.resourceId);
+      if (!alreadyHasResource) {
+        this.availableResources.push({
+          id: res.resourceId,
+          name: res.resourceName,
+          state: 'Archived'
+        });
+      }
+
+      const alreadyHasUnit = this.availableUnits.some(u => u.id === res.unitId);
+      if (!alreadyHasUnit) {
+        this.availableUnits.push({
+          id: res.unitId,
+          name: res.unitName,
+          state: 'Archived'
+        });
+      }
+    }
   }
 
   onSubmit() {
@@ -93,5 +114,19 @@ export class ReceiptDocumentDetails implements OnInit {
         this.errorMessage = err.error?.detail || 'Ошибка при обновлении документа';
       }
     });
+  }
+
+  delete(): void {
+    if (confirm('Удалить это поступление?')) {
+      this.service.delete(this.documentId).subscribe({
+        next: () => {
+          this.router.navigate(['/receipt-documents']);
+          this.errorMessage = null;
+         },
+        error: (err) => {
+          this.errorMessage = err.error?.detail || 'Произошла ошибка';
+        }
+      });
+    }
   }
 }

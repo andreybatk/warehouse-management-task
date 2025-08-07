@@ -1,4 +1,11 @@
-<h3 class="h3">Поступление</h3>
+<div class="receipt-documents-header">
+  <h3 class="h3">Поступление</h3>
+  <div class="actions">
+    <button class="btn btn-danger" (click)="delete()">Удалить</button>
+  </div>
+</div>
+
+<div *ngIf="errorMessage" class="error-box mb16">{{ errorMessage }}</div>
 
 <form class="edit-form" [formGroup]="form" (ngSubmit)="onSubmit()">
   <label class="wm-control-label mb16">
@@ -53,4 +60,4 @@
   </div>
 </form>
 
-<div *ngIf="errorMessage" class="error-box">{{ errorMessage }}</div>
+
