@@ -33,23 +33,12 @@ services:
       - ASPNETCORE_HTTP_PORTS=80
     image: ${DOCKER_REGISTRY-}warehousemanagementapi
     build:
-      context: .
+      context: ../
       dockerfile: WarehouseManagement.API/Dockerfile
     ports:
       - "8080:80"
     networks:
       - warehousemanagement-network
-  
-  frontend:
-    build:
-        context: ../../frontend/warehouse-management
-        dockerfile: Dockerfile
-    ports:
-        - "4200:80"
-    networks:
-      - warehousemanagement-network
-    depends_on:
-        - warehousemanagement.api
 
 volumes:
   warehousemanagement-postgres-data:
