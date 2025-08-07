@@ -20,6 +20,6 @@ public class GetUnitQueryHandler(IUnitRepository unitRepository, ILogger<GetUnit
             throw new NotFoundException("Единица измерения не найдена.");
         }
 
-        return new UnitResponse(unit.Id, unit.Name, unit.State); //TODO: сделать маппер
+        return new UnitResponse(unit.Id, unit.Name, unit.State); //TODO: сделать mapper
     }
 }

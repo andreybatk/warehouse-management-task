@@ -19,13 +19,11 @@ public class CreateReceiptDocumentHandler(IReceiptDocumentRepository documentRep
 
         var document = new ReceiptDocument
         {
-            Id = Guid.NewGuid(),
             Number = request.Number,
             CreatedAt = request.CreatedAt,
             ReceiptResources = request.ReceiptResources != null
                 ? request.ReceiptResources.Select(r => new ReceiptResource
                 {
-                    Id = Guid.NewGuid(),
                     ResourceId = r.ResourceId,
                     UnitId = r.UnitId,
                     Quantity = r.Quantity

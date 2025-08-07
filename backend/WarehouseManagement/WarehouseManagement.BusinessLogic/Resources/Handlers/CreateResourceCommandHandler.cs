@@ -18,7 +18,7 @@ public class CreateResourceCommandHandler(IResourceRepository resourceRepository
             throw new BadRequestException("Ресурс с таким наименованием уже существует.");
         }
 
-        var resource = new Resource { Id = Guid.NewGuid(), Name = request.Name, State = request.State };
+        var resource = new Resource { Name = request.Name, State = request.State };
 
         return await resourceRepository.AddAsync(resource);
     }

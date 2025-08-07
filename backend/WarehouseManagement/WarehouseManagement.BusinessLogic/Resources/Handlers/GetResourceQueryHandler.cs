@@ -19,6 +19,6 @@ public class GetResourceQueryHandler(IResourceRepository resourceRepository, ILo
             throw new NotFoundException("Ресурс не найден.");
         }
 
-        return new ResourceResponse(resource.Id, resource.Name, resource.State); //TODO: сделать маппер
+        return new ResourceResponse(resource.Id, resource.Name, resource.State); //TODO: сделать mapper
     }
 }

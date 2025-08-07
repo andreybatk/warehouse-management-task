@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using WarehouseManagement.BusinessLogic.Abstractions.Messaging;
-using WarehouseManagement.BusinessLogic.Resources.Commands;
+using WarehouseManagement.BusinessLogic.ReceiptDocuments.Commands;
 using WarehouseManagement.Domain.Exceptions;
 using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.BusinessLogic.ReceiptDocuments.Handlers;
 public class DeleteReceiptDocumentCommandHandler(IReceiptDocumentRepository documentRepository, ILogger<DeleteReceiptDocumentCommandHandler> logger)
-    : ICommandHandler<DeleteResourceCommand, Guid?>
+    : ICommandHandler<DeleteReceiptDocumentCommand, Guid?>
 {
-    public async Task<Guid?> Handle(DeleteResourceCommand request, CancellationToken cancellationToken)
+    public async Task<Guid?> Handle(DeleteReceiptDocumentCommand request, CancellationToken cancellationToken)
     {
-        if (await documentRepository.ExistsByIdAsync(request.Id))
+        if (!await documentRepository.ExistsByIdAsync(request.Id))
         {
             logger.LogError("Документ поступления '{id}' не найден.", request.Id);
             throw new NotFoundException("Документ поступления не найден.");

@@ -33,11 +33,11 @@ public class ReceiptDocumentRepository(ApplicationDbContext context) : IReceiptD
         return await context.ReceiptDocuments.Select(d => d.Number).ToListAsync();
     }
 
-    public async Task<Guid> UpdateAsync(ReceiptDocument unit)
+    public async Task<Guid> UpdateAsync(ReceiptDocument document)
     {
-        context.ReceiptDocuments.Update(unit);
+        context.ReceiptDocuments.Update(document);
         await context.SaveChangesAsync();
-        return unit.Id;
+        return document.Id;
     }
 
     public async Task<bool> ExistsByNumberAsync(long number)
@@ -70,14 +70,23 @@ public class ReceiptDocumentRepository(ApplicationDbContext context) : IReceiptD
     {
         var query = context.ReceiptDocuments.AsQueryable();
 
-        if (dateFrom.HasValue)
-            query = query.Where(d => d.CreatedAt >= dateFrom.Value);
-        if (dateTo.HasValue)
-            query = query.Where(d => d.CreatedAt <= dateTo.Value);
-        if (documentNumbers is not null)
+        var hasFilters =
+            documentNumbers?.Count > 0 ||
+            resourceIds?.Count > 0 ||
+            unitIds?.Count > 0;
+
+        if (!hasFilters)
+        {
+            if (dateFrom.HasValue)
+                query = query.Where(d => d.CreatedAt >= dateFrom.Value);
+            if (dateTo.HasValue)
+                query = query.Where(d => d.CreatedAt <= dateTo.Value);
+        }
+
+        if (documentNumbers?.Count > 0)
             query = query.Where(d => documentNumbers.Contains(d.Number));
 
-        if ((resourceIds?.Count > 0) || (unitIds?.Count > 0))
+        if (resourceIds?.Count > 0 || unitIds?.Count > 0)
         {
             query = query.Where(d => d.ReceiptResources.Any(r =>
                 (resourceIds == null || resourceIds.Count == 0 || resourceIds.Contains(r.ResourceId)) &&

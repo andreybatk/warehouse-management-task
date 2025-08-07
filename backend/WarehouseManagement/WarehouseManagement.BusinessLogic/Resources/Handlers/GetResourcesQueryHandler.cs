@@ -12,6 +12,6 @@ public class GetResourcesQueryHandler(IResourceRepository resourceRepository)
     {
         var resources = await resourceRepository.GetAllAsync(request.State);
 
-        return resources.Select(r => new ResourceResponse(r.Id, r.Name, r.State)).ToList(); //TODO: сделать маппер
+        return resources.Select(r => new ResourceResponse(r.Id, r.Name, r.State)).ToList(); //TODO: сделать mapper
     }
 }

@@ -45,5 +45,6 @@ public interface IResourceRepository
     /// <summary>
     /// Получить ресурс по имени
     /// </summary>
+    // ReSharper disable once UnusedMember.Global
     Task<Resource?> GetByNameAsync(string name);
 }

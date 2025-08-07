@@ -18,7 +18,7 @@ public class CreateUnitCommandHandler(IUnitRepository unitRepository, ILogger<Cr
             throw new BadRequestException("Единица измерения с таким наименованием уже существует.");
         }
 
-        var unit = new Unit { Id = Guid.NewGuid(), Name = request.Name, State = request.State };
+        var unit = new Unit { Name = request.Name, State = request.State };
 
         return await unitRepository.AddAsync(unit);
     }

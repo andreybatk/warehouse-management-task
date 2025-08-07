@@ -1,5 +1,4 @@
 ﻿using WarehouseManagement.BusinessLogic.Abstractions.Messaging;
-using WarehouseManagement.BusinessLogic.ReceiptDocuments.DTOs;
 
 namespace WarehouseManagement.BusinessLogic.ReceiptDocuments.Queries;
 /// <summary>

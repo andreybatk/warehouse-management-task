@@ -92,7 +92,6 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
         return Ok(deletedId);
     }
 
-    //TODO: Сделать обновление всего документа и ресурсов одним запросом
     /// <summary>
     /// Обновить документ поступления
     /// </summary>
@@ -106,7 +105,7 @@ public class ReceiptDocumentsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateReceiptDocumentRequest request, CancellationToken token)
     {
-        var updatedId = await mediator.Send(new UpdateReceiptDocumentCommand(id, request.Number, request.CreatedAt), token);
+        var updatedId = await mediator.Send(new UpdateReceiptDocumentCommand(id, request.Number, request.CreatedAt, request.ReceiptResources), token);
 
         return Ok(updatedId);
     }

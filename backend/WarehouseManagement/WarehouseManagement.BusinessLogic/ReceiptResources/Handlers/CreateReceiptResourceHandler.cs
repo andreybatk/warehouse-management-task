@@ -6,7 +6,7 @@ using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.BusinessLogic.ReceiptResources.Handlers;
 
-public class AddReceiptResourceHandler(
+public class CreateReceiptResourceHandler(
     IReceiptResourceRepository receiptResourceRepository,
     IReceiptDocumentRepository documentRepository,
     IResourceRepository resourceRepository,

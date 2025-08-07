@@ -4,6 +4,7 @@ namespace WarehouseManagement.API.Middlewares;
 
 public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {
+    // ReSharper disable once UnusedMember.Global Используется через middleware
     public async Task InvokeAsync(HttpContext context)
     {
         try

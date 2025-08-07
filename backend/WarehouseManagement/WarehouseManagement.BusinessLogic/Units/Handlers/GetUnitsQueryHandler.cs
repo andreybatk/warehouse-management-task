@@ -12,6 +12,6 @@ public class GetUnitsQueryHandler(IUnitRepository unitRepository)
     {
         var units = await unitRepository.GetAllAsync(request.State);
 
-        return units.Select(r => new UnitResponse(r.Id, r.Name, r.State)).ToList(); //TODO: сделать маппер
+        return units.Select(r => new UnitResponse(r.Id, r.Name, r.State)).ToList(); //TODO: сделать mapper
     }
 }

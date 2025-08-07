@@ -45,5 +45,6 @@ public interface IUnitRepository
     /// <summary>
     /// Получить единицу измерения по имени
     /// </summary>
+    // ReSharper disable once UnusedMember.Global
     Task<Unit?> GetByNameAsync(string name);
 }
